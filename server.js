@@ -801,6 +801,28 @@ app.post('/api/invitations/:code/guestbook', rateLimit({ max: 20 }), (req, res) 
   res.status(201).json({ entry });
 });
 
+app.get('/api/invitations/:code/qr.png', async (req, res) => {
+  const event = findEventByCode(req.params.code);
+  if (!event) return res.status(404).json({ error: 'Invitation introuvable.' });
+  const guest = req.query.g
+    ? db.guests.find(
+        (g) =>
+          g.eventId === event.id && g.token.toUpperCase() === String(req.query.g).toUpperCase()
+      )
+    : null;
+  try {
+    const png = await QRCode.toBuffer(guestLink(req, event, guest), {
+      type: 'png',
+      width: 480,
+      margin: 1,
+      color: { dark: '#101014', light: '#ffffff' },
+    });
+    res.type('png').set('Cache-Control', 'no-store').send(png);
+  } catch (err) {
+    res.status(500).json({ error: 'QR code indisponible.' });
+  }
+});
+
 app.get('/api/invitations/:code/calendar.ics', (req, res) => {
   const event = findEventByCode(req.params.code);
   if (!event) return res.status(404).send('Événement introuvable');
