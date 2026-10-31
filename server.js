@@ -456,6 +456,12 @@ app.put('/api/events/:id', requireAuthApi, (req, res) => {
   }
   if (THEMES.includes(body.theme)) event.theme = body.theme;
   if (typeof body.active === 'boolean') event.active = body.active;
+  if (Array.isArray(body.program)) {
+    event.program = body.program
+      .map((p) => ({ time: clean(p?.time, 20), label: clean(p?.label, 120) }))
+      .filter((p) => p.label)
+      .slice(0, 12);
+  }
   persist();
   res.json({ event: { ...event, stats: eventStats(event.id) } });
 });
