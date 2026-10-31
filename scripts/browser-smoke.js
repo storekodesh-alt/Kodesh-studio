@@ -124,10 +124,13 @@ async function main() {
     }
 
     await check('vitrine', '/', [
-      ['h1', 'PLANNING'],
-      ['body', 'Kinshasa'],
+      ['header .brand', 'PLANNING'],
+      ['h1', 'Vos invités vivent l’événement'],
+      ['#fonctionnalites', 'livre d’or'],
+      ['#contact', 'Kinshasa'],
       ['a[href^="https://wa.me"]', null],
-      ['#quote-form', null],
+      ['#contact-form', null],
+      ['#c-submit', 'Envoyer ma demande'],
     ]);
 
     await check('connexion', '/login', [
