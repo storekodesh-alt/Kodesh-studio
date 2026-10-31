@@ -126,7 +126,7 @@ async function main() {
     await check('vitrine', '/', [
       ['header .brand', 'PLANNING'],
       ['h1', "Vos invités vivent l'événement"],
-      ['#fonctionnalites h2', 'Fonctionnalités'],
+      ['#fonctionnalites h2', "Tout ce qu'il faut"],
       ['#fonctionnalites', 'QR'],
       ['#contact', 'Kinshasa'],
       ['a[href^="https://wa.me"]', null],
