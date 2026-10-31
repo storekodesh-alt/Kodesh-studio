@@ -120,7 +120,7 @@ async function main() {
     });
     assert.match(duplicate.error, /déjà/, 'un second scan doit signaler le doublon');
 
-    const stats = await api(`/api/events/${event.id}`);
+    const stats = await api(`/api/events/${event.id}/guests`);
     assert.equal(stats.stats.confirmed, 1, 'un invité doit être confirmé');
     assert.equal(stats.stats.checkedIn, 1, 'une entrée doit être comptée');
 
