@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Connexion — Planning Events</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/app.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c62a3d'/%3E%3Cpath d='M16 7l7 9-7 9-7-9z' fill='%23f4e0b6'/%3E%3C/svg%3E" />
+</head>
+<body class="login-body">
+<main class="login-card">
+  <a class="brand" href="/" style="justify-content:center;margin-bottom:26px">
+    <span class="brand-mark"><span>◆</span></span>
+    <span class="brand-text">PLANNING <b>EVENTS</b></span>
+  </a>
+  <h1>Espace professionnel</h1>
+  <p class="sub">Saisissez le code administrateur pour gérer vos événements.</p>
+
+  <form id="login-form" novalidate>
+    <div class="field">
+      <label for="code">Code administrateur</label>
+      <input id="code" name="code" type="password" autocomplete="current-password" placeholder="••••••••" required autofocus />
+    </div>
+    <button class="btn btn-gold btn-block" type="submit" id="submit">Entrer</button>
+    <p class="form-status" id="status" role="status"></p>
+  </form>
+
+  <p class="form-note" id="demo-hint" hidden>
+    Démonstration : code <strong>PLANNING2026</strong>
+  </p>
+  <p class="form-note" style="margin-top:18px">
+    <a href="/" style="color:var(--gold)">← Retour au site</a>
+  </p>
+</main>
+
+<script>
+  const form = document.getElementById('login-form');
+  const status = document.getElementById('status');
+  const submit = document.getElementById('submit');
+
+  fetch('/api/session')
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.authenticated) window.location.replace('/admin');
+      if (data.demoCode) {
+        const hint = document.getElementById('demo-hint');
+        hint.hidden = false;
+        hint.innerHTML = `Démonstration : code <strong>${data.demoCode}</strong>`;
+      }
+    })
+    .catch(() => {});
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.className = 'form-status';
+    status.textContent = '';
+    submit.disabled = true;
+    submit.textContent = 'Vérification…';
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: document.getElementById('code').value }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Connexion refusée.');
+      window.location.replace('/admin');
+    } catch (err) {
+      status.className = 'form-status err';
+      status.textContent = err.message;
+      submit.disabled = false;
+      submit.textContent = 'Entrer';
+    }
+  });
+</script>
+</body>
+</html>
