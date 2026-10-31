@@ -970,11 +970,18 @@ app.use((err, req, res, next) => {
 loadDb();
 
 if (require.main === module) {
-  app.listen(Number(process.env.PORT) || 3000, '0.0.0.0', () => {
-    console.log(
-      `Planning Events prêt sur http://0.0.0.0:${Number(process.env.PORT) || 3000}`
-    );
+  const port = Number(process.env.PORT) || 3000;
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`Planning Events prêt sur http://0.0.0.0:${port}`);
   });
+
+  // Le proxy d'hébergement conserve ses connexions plus longtemps que les
+  // valeurs Node par défaut (5 s). Sans cet alignement, le proxy réutilise une
+  // connexion déjà fermée côté origine et renvoie une erreur 520 aléatoire.
+  server.keepAliveTimeout = 75_000;
+  server.headersTimeout = 80_000;
+  server.requestTimeout = 120_000;
+  server.timeout = 0;
 }
 
 module.exports = { app, loadDb, eventStats };
