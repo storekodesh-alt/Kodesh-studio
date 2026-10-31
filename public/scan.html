@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contrôle d'accès — Planning Events</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/app.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c62a3d'/%3E%3Cpath d='M16 7l7 9-7 9-7-9z' fill='%23f4e0b6'/%3E%3C/svg%3E" />
+</head>
+<body class="scan-body">
+
+<header class="scan-top">
+  <a class="brand" href="/admin">
+    <span class="brand-mark"><span>◆</span></span>
+    <span class="brand-text" style="font-size:.85rem">PLANNING <b>EVENTS</b></span>
+  </a>
+  <div class="scan-live">
+    <span class="live-dot"></span> Contrôle d'accès en direct
+  </div>
+</header>
+
+<main class="scan-main">
+  <div class="scan-stats">
+    <div class="stat"><b id="s-in">0</b><span>Entrés</span></div>
+    <div class="stat ok"><b id="s-confirmed">0</b><span>Confirmés</span></div>
+    <div class="stat"><b id="s-seats">0</b><span>Places</span></div>
+    <div class="stat gold"><b id="s-pending">0</b><span>En attente</span></div>
+  </div>
+
+  <section class="panel scan-panel">
+    <h1>Scanner un billet</h1>
+    <p class="sub">Scannez le QR code du billet ou saisissez son code.</p>
+
+    <form id="scan-form" class="scan-form">
+      <input id="scan-input" placeholder="Code billet ou lien d'invitation" autocomplete="off" autofocus />
+      <button class="btn btn-gold" type="submit">Valider</button>
+    </form>
+
+    <div class="scan-camera">
+      <video id="video" playsinline muted hidden></video>
+      <div class="scan-frame" id="scan-frame" hidden></div>
+      <button class="btn btn-ghost btn-sm" id="camera-btn" type="button">Activer la caméra</button>
+      <p class="form-note" id="camera-note" hidden>
+        Le scan caméra n'est pas disponible sur ce navigateur : utilisez la saisie du code.
+      </p>
+    </div>
+
+    <div class="scan-result" id="result" hidden></div>
+
+    <div class="recent" id="recent"></div>
+  </section>
+
+  <p class="form-note" style="text-align:center;margin-top:18px">
+    <a href="/admin" style="color:var(--gold)">← Retour au tableau de bord</a>
+  </p>
+</main>
+
+<script src="/js/scan.js"></script>
+</body>
+</html>

@@ -5,9 +5,9 @@
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
   const esc = (value) =>
-    String(value ?? '').replace(/[&<>"']/g, (c) => {
+    String(value ?? '').replace(/[&<>"']/g, (char) => {
       const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-      return map[char === undefined ? c : c] ?? c;
+      return map[char];
     });
 
   const state = {
