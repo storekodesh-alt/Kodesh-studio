@@ -14,7 +14,27 @@ const QRCode = require('qrcode');
 
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, 'public');
-const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, 'data');
+
+/** Choisit un répertoire de données inscriptible (volume, dossier local, tmp). */
+function resolveDataDir() {
+  const candidates = [
+    process.env.DATA_DIR,
+    path.join(ROOT, 'data'),
+    path.join(os.tmpdir(), 'planning-events-data'),
+  ].filter(Boolean);
+  for (const dir of candidates) {
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+      fs.accessSync(dir, fs.constants.W_OK);
+      return dir;
+    } catch {
+      /* candidat suivant */
+    }
+  }
+  return path.join(ROOT, 'data');
+}
+
+const DATA_DIR = resolveDataDir();
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 
 const ADMIN_CODE = process.env.ADMIN_CODE || 'PLANNING2026';
