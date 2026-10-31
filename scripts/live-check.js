@@ -24,7 +24,7 @@ function step(name) {
   process.stdout.write(`• ${name}\n`);
 }
 
-async function api(path, { method = 'GET', body, expect = 200 } = {}) {
+async function api(path, { method = 'GET', body, expect } = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers: {
