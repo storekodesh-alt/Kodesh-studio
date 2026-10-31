@@ -37,7 +37,7 @@ const api = async (pathname, options = {}) => {
 
 test.before(async () => {
   await new Promise((resolve) => {
-    server = app.listen(0, '127.0.0.1', resolve);
+    server = app.listen(0, '0.0.0.0', resolve);
   });
   base = `http://127.0.0.1:${server.address().port}`;
 });
