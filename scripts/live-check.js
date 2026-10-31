@@ -37,11 +37,18 @@ async function api(path, { method = 'GET', body, expect } = {}) {
   const setCookie = res.headers.get('set-cookie');
   if (setCookie) cookie = setCookie.split(';')[0];
   const text = await res.text();
-  assert.equal(
-    res.status,
-    expect,
-    `${method} ${path} → HTTP ${res.status} (attendu ${expect}) : ${text.slice(0, 200)}`
-  );
+  if (typeof expect === 'number') {
+    assert.equal(
+      res.status,
+      expect,
+      `${method} ${path} → HTTP ${res.status} (attendu ${expect}) : ${text.slice(0, 200)}`
+    );
+  } else {
+    assert.ok(
+      res.status >= 200 && res.status < 300,
+      `${method} ${path} → HTTP ${res.status} (attendu 2xx) : ${text.slice(0, 200)}`
+    );
+  }
   if (/json/.test(res.headers.get('content-type') || '')) return JSON.parse(text);
   return text;
 }
