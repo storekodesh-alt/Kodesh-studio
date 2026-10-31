@@ -46,6 +46,18 @@ npm test             # tests d'intégration de l'API (node:test)
 Un événement de démonstration est créé au premier lancement : code `DEMO2026`,
 4 invités, livre d'or et programme pré-remplis.
 
+## Vérifications
+
+```bash
+npm test                                   # tests d'intégration de l'API (13 tests)
+node scripts/browser-smoke.js              # parcours navigateur réel (vitrine, connexion, admin, scan, mobile)
+BASE_URL=https://votre-domaine npm run verify:live   # parcours métier complet sur l'app déployée
+```
+
+`npm run verify:live` enchaîne contre l'application en ligne : connexion, création d'un
+événement, ajout d'un invité, QR code, RSVP, livre d'or, scan, détection du doublon,
+statistiques et export CSV — puis supprime l'événement de test.
+
 ## Configuration
 
 | Variable | Défaut | Description |
