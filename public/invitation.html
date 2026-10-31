@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invitation — Planning Events</title>
+<meta name="description" content="Invitation digitale : confirmez votre présence et laissez un message au livre d'or." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/app.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c62a3d'/%3E%3Cpath d='M16 7l7 9-7 9-7-9z' fill='%23f4e0b6'/%3E%3C/svg%3E" />
+</head>
+<body class="inv-body" data-theme="rouge">
+
+<main class="invite" id="page" hidden>
+  <section class="invite-hero">
+    <div class="kicker" id="kicker">Nous avons la joie de vous convier</div>
+    <h1 id="hosts">—</h1>
+    <div class="invite-date" id="date">—</div>
+    <div class="invite-venue" id="venue">—</div>
+    <p class="invite-intro" id="intro" hidden></p>
+    <div class="invite-tags">
+      <span class="pill" id="dress" hidden></span>
+      <span class="pill" id="guest-pill" hidden></span>
+      <span class="pill" id="deadline" hidden></span>
+    </div>
+    <div class="countdown" id="countdown" hidden>
+      <div class="cd-item"><b id="cd-d">0</b><span>jours</span></div>
+      <div class="cd-item"><b id="cd-h">0</b><span>heures</span></div>
+      <div class="cd-item"><b id="cd-m">0</b><span>minutes</span></div>
+      <div class="cd-item"><b id="cd-s">0</b><span>secondes</span></div>
+    </div>
+    <div class="invite-actions">
+      <a class="btn btn-gold" href="#rsvp">Confirmer ma présence</a>
+      <a class="btn btn-ghost" id="calendar-link" href="#" hidden>Ajouter au calendrier</a>
+      <button class="btn btn-ghost" id="share-btn" type="button">Partager</button>
+    </div>
+  </section>
+
+  <div class="invite-grid">
+    <section class="panel" id="program-panel">
+      <h2>Programme</h2>
+      <p class="sub">Déroulé de la journée</p>
+      <ul class="timeline" id="program"></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Lieu & accès</h2>
+      <p class="sub">Carte d'adresse</p>
+      <p style="font-size:1.05rem;font-family:var(--serif)" id="place-name">—</p>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:6px" id="place-address">—</p>
+      <a class="btn btn-ghost btn-sm" id="map-link" style="margin-top:16px" target="_blank" rel="noopener" hidden>Ouvrir dans Google Maps</a>
+      <div style="margin-top:22px;display:grid;place-items:center;gap:8px">
+        <div class="qr-box" style="padding:10px;background:#fff;border-radius:12px">
+          <img id="qr" alt="QR code de l'invitation" width="150" height="150" />
+        </div>
+        <span class="form-note">Votre billet d'entrée</span>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel" id="rsvp">
+    <h2>Confirmer ma présence</h2>
+    <p class="sub">Merci de répondre avant la date limite indiquée.</p>
+    <div id="rsvp-summary" class="rsvp-ok" hidden></div>
+
+    <form id="rsvp-form" style="margin-top:18px">
+      <div class="grid-2">
+        <div class="field">
+          <label for="r-name">Nom complet *</label>
+          <input id="r-name" name="name" maxlength="120" required placeholder="Votre nom" />
+        </div>
+        <div class="field">
+          <label for="r-phone">Téléphone / WhatsApp</label>
+          <input id="r-phone" name="phone" maxlength="40" placeholder="+243 ..." />
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="r-seats">Nombre de personnes</label>
+          <input id="r-seats" name="seats" type="number" min="1" max="20" value="1" />
+        </div>
+        <div class="field">
+          <label for="r-attending">Votre réponse</label>
+          <select id="r-attending" name="attending">
+            <option value="yes">Oui, je serai présent(e)</option>
+            <option value="no">Non, avec regret</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="r-message">Un mot pour le livre d'or (facultatif)</label>
+        <textarea id="r-message" name="message" maxlength="500" placeholder="Félicitations, bénédictions, souvenir..."></textarea>
+      </div>
+      <button class="btn btn-gold btn-block" type="submit" id="r-submit">Envoyer ma réponse</button>
+      <p class="form-status" id="r-status" role="status"></p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Livre d'or</h2>
+    <p class="sub">Les messages des invités</p>
+    <div class="guestbook" id="guestbook"></div>
+    <p class="form-note" id="gb-empty" hidden>Soyez le premier à laisser un message.</p>
+  </section>
+
+  <p style="text-align:center;color:#6f6b78;font-size:.78rem;margin-top:32px">
+    Invitation créée avec <a href="/" style="color:var(--gold)">Planning Events</a> — Kodesh Studio, Kinshasa
+  </p>
+</main>
+
+<div class="wrap" style="padding:80px 0;text-align:center" id="loading">
+  <p class="eyebrow" style="justify-content:center">Chargement de l'invitation…</p>
+</div>
+
+<div class="wrap" style="padding:80px 0;text-align:center" id="notfound" hidden>
+  <h1 class="serif" style="font-size:2rem;margin-bottom:10px">Invitation introuvable</h1>
+  <p style="color:var(--muted)">Ce lien n'est plus valide ou l'événement a été retiré.</p>
+  <a class="btn btn-gold" href="/" style="margin-top:22px">Retour à l'accueil</a>
+</div>
+
+<script src="/js/invitation.js"></script>
+</body>
+</html>
