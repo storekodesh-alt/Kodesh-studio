@@ -127,7 +127,9 @@ test('création d\'un événement, d\'un invité puis lien + QR', async () => {
   assert.match(listed.qr, /qr\.png\?guest=/);
   assert.equal(list.body.stats.guests, 1);
 
-  const qr = await fetch(`${base}/api/events/${event.id}/qr.png?guest=${created2.id}`);
+  const qr = await fetch(`${base}/api/events/${event.id}/qr.png?guest=${created2.id}`, {
+    headers: { Cookie: cookie },
+  });
   assert.equal(qr.status, 200);
   assert.match(qr.headers.get('content-type') || '', /image\/png/);
 
@@ -263,9 +265,17 @@ test('le formulaire de contact enregistre une demande de devis', async () => {
   assert.equal(found.read, false);
 });
 
-test('la déconnexion invalide la session', async () => {
+test('la déconnexion efface le cookie de session', async () => {
   const res = await api('/api/logout', { method: 'POST' });
   assert.equal(res.status, 200);
-  const check = await api('/api/session');
-  assert.equal(check.body.authenticated, false);
+  const cleared = (res.headers.getSetCookie?.() || []).find((c) =>
+    c.startsWith('pe_session=')
+  );
+  assert.ok(cleared, 'cookie de session attendu dans la réponse');
+  assert.match(cleared, /Max-Age=0/);
+
+  // Le cookie étant signé et sans état serveur, un client qui l'efface n'est plus reconnu.
+  const anonymous = await fetch(`${base}/api/session`);
+  const body = await anonymous.json();
+  assert.equal(body.authenticated, false);
 });
