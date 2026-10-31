@@ -1,0 +1,19 @@
+{
+  "name": "kodesh-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Planning Events — plateforme d'invitations digitales interactives (RSVP, QR codes, gestion des invités, livre d'or)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "qrcode": "^1.5.3"
+  }
+}
