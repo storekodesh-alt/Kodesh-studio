@@ -154,8 +154,8 @@ async function main() {
     await page.waitForSelector('#stats .stat', { timeout: 10000 });
     const cards = await page.$$eval('#stats .stat', (els) => els.length);
     if (cards < 3) failures.push(`admin: ${cards} cartes de statistiques affichées (attendu ≥ 3)`);
-    await page.waitForSelector('#event-select option', { timeout: 5000 });
-    const guestRows = await page.$$eval('#guests-body tr', (els) => els.length);
+    await page.waitForSelector('#event-select option', { state: 'attached', timeout: 5000 });
+    const guestRows = await page.$eval('#guests-body tr', (els) => els.length);
     if (guestRows < 1) failures.push('admin: aucun invité listé pour l\'événement de démonstration');
     const dashTitle = (await page.textContent('#event-title')) || '';
     if (!dashTitle.trim() || /chargement/i.test(dashTitle)) {
